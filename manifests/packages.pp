@@ -1,15 +1,11 @@
-# Class: gitea::packages
-# ===========================
+include gitea
+# @summary
+# Manages dependencies for the `gitea` class.
 #
-# Manages dependencies for the `::gitea` class.
-#
-# Parameters
-# ----------
-#
-# * `dependencies_ensure`
+# @param dependencies_ensure
 # Should dependencies be installed? Defaults to 'present'.
 #
-# * `dependencies`
+# @param dependencies
 # List of OS family specific dependencies.
 #
 # Authors
@@ -25,9 +21,8 @@
 class gitea::packages (
   Enum['latest','present','absent'] $dependencies_ensure = $gitea::dependencies_ensure,
   Array[String] $dependencies = $gitea::dependencies,
-  ) {
-
+) {
   if ($dependencies_ensure) {
-    ensure_packages($dependencies, {'ensure' => $dependencies_ensure})
+    ensure_packages($dependencies, { 'ensure' => $dependencies_ensure })
   }
 }

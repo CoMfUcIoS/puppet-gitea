@@ -12,8 +12,8 @@ describe 'gitea::install', type: :class do
           {
             package_ensure: 'present',
             base_url: 'https://dl.gitea.io/gitea',
-            version: '1.1.0',
-            checksum: '59cd3fb52292712bd374a215613d6588122d93ab19d812b8393786172b51d556',
+            version: '1.17.3',
+            checksum: '38c4e1228cd051b785c556bcadc378280d76c285b70e8761cd3f5051aed61b5e',
             checksum_type: 'sha256',
             owner: 'git',
             group: 'git',

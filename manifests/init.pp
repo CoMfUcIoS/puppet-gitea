@@ -1,90 +1,85 @@
-# Class: gitea
-# ===========================
-#
+# @summary
 # Manages a Gitea installation on various Linux/BSD operating systems.
 #
-# Parameters
-# ----------
-#
-# * `package_ensure`
+# @param package_ensure
 # Decides if the `gitea` binary will be installed. Default: 'present'
 #
-# * `dependencies_ensure`
+# @param dependencies_ensure
 # Should dependencies be installed? Defaults to 'present'.
 #
-# * `dependencies`
+# @param dependencies
 # List of OS family specific dependencies.
 #
-# * `manage_user`
+# @param manage_user
 # Should we manage provisioning the user? Default: true
 #
-# * `manage_group`
+# @param manage_group
 # Should we manage provisioning the group? Default: true
 #
-# * `manage_home`
+# @param manage_home
 # Should we manage provisioning the home directory? Default: true
 #
-# * `owner`
+# @param owner
 # The user owning gitea and its' files. Default: 'git'
 #
-# * `group`
+# @param group
 # The group owning gitea and its' files. Default: 'git'
 #
-# * `home`
+# @param home
 # Qualified path to the users' home directory. Default: empty
 #
-# * `proxy`
+# @param proxy
 # Download via specified proxy. Default: empty
 #
-# * `base_url`
+# @param base_url
 # Download base URL. Default: Github. Can be used for local mirrors.
 #
-# * `version`
+# @param version
 # Version of gitea to install. Default: '1.1.0'
 #
-# * `checksum`
+# @param checksum
 # Checksum for the binary.
 #
-# * `checksum_type`
+# @param checksum_type
 # Type of checksum used to verify the binary being installed. Default: 'sha256'
 #
-# * `installation_directory`
+# @param installation_directory
 # Target directory to hold the gitea installation. Default: '/opt/gitea'
 #
-# * `repository_root`
+# @param repository_root
 # Directory where gitea will keep all git repositories. Default: '/var/git'
 #
-# * `log_directory`
+# @param log_directory
 # Log directory for gitea. Default: '/var/log/gitea'
 #
-# * `attachment_directory`
+# @param attachment_directory
 # Directory for storing attachments. Default: '/opt/gitea/data/attachments'
 #
-# * `lfs_enabled`
+# @param lfs_enabled
 # Make use of git-lfs. Default: false
 #
-# * `lfs_content_directory`
+# @param lfs_content_directory
 # Directory for storing LFS data. Default: '/opt/gitea/data/lfs'
 #
-# * `configuration_sections`
+# @param configuration_sections
 # INI style settings for configuring Gitea.
 #
-# * `manage_service`
+# @param manage_service
 # Should we manage a service definition for Gitea?
 #
-# * `service_template`
+# @param service_template
 # Path to service template file.
 #
-# * `service_path`
+# @param service_path
 # Where to create the service definition.
 #
-# * `service_provider`
+# @param service_provider
 # Which service provider do we use?
 #
-# * `service_mode`
+# @param service_mode
 # File mode for the created service definition.
 #
-# * `robots_txt`
+# @param robots_txt
 # Allows to provide a http://www.robotstxt.org/ file to restrict crawling.
 #
 # Examples
@@ -137,22 +132,20 @@ class gitea (
   String $service_mode,
 
   String $robots_txt,
-  ) {
+) {
+  contain gitea::begin
+  contain gitea::packages
+  contain gitea::user
+  contain gitea::install
+  contain gitea::config
+  contain gitea::service
+  contain gitea::end
 
-  class { '::gitea::packages': }
-  class { '::gitea::user': }
-  class { '::gitea::install': }
-
-  class { '::gitea::config': }
-  class { '::gitea::service': }
-
-  anchor { 'gitea::begin': }
-  anchor { 'gitea::end': }
-
-  Anchor['gitea::begin']
+  Class['gitea::begin']
   -> Class['gitea::packages']
   -> Class['gitea::user']
   -> Class['gitea::install']
   -> Class['gitea::config']
-  ~> Class['gitea::service']
+  -> Class['gitea::service']
+  ~> Class['gitea::end']
 }

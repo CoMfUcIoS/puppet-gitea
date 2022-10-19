@@ -1,18 +1,14 @@
-# Class: gitea::service
-# ===========================
+include gitea
+# @summary
+# Manages services for the `gitea` class.
 #
-# Manages services for the `::gitea` class.
-#
-# Parameters
-# ----------
-#
-# * `manage_service`
+# @param manage_service
 # Should we manage a service definition for Gitea?
 #
-# * `service_provider`
+# @param service_provider
 # Which service provider do we use?
 #
-# * `installation_directory`
+# @param installation_directory
 # Target directory to hold the gitea installation. Default: '/opt/gitea'
 #
 # Authors
@@ -29,8 +25,7 @@ class gitea::service (
   Boolean $manage_service        = $gitea::manage_service,
   String $service_provider       = $gitea::service_provider,
   String $installation_directory = $gitea::installation_directory,
-  ) {
-
+) {
   if ($manage_service) {
     service { 'gitea':
       ensure     => 'running',

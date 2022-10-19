@@ -1,39 +1,35 @@
-# Class: gitea::config
-# ===========================
+include gitea
+# @summary
+# Applies configuration for `gitea` class to system.
 #
-# Applies configuration for `::gitea` class to system.
-#
-# Parameters
-# ----------
-#
-# * `configuration_sections`
+# @param configuration_sections
 # INI style settings for configuring Gitea.
 #
-# * `owner`
+# @param owner
 # The user owning gitea and its' files. Default: 'git'
 #
-# * `group`
+# @param group
 # The group owning gitea and its' files. Default: 'git'
 #
-# * `installation_directory`
+# @param installation_directory
 # Target directory to hold the gitea installation. Default: '/opt/gitea'
 #
-# * `repository_root`
+# @param repository_root
 # Directory where gitea will keep all git repositories. Default: '/var/git'
 #
-# * `log_directory`
+# @param log_directory
 # Log directory for gitea. Default: '/var/log/gitea'
 #
-# * `attachment_directory`
+# @param attachment_directory
 # Directory for storing attachments. Default: '/opt/gitea/data/attachments'
 #
-# * `lfs_enabled`
+# @param lfs_enabled
 # Make use of git-lfs. Default: false
 #
-# * `lfs_content_directory`
+# @param lfs_content_directory
 # Directory for storing LFS data. Default: '/opt/gitea/data/lfs'
 #
-# * `robots_txt`
+# @param robots_txt
 # Allows to provide a http://www.robotstxt.org/ file to restrict crawling.
 #
 # Authors
@@ -57,8 +53,7 @@ class gitea::config (
   String $lfs_content_directory  = $gitea::lfs_content_directory,
   Boolean $lfs_enabled           = $gitea::lfs_enabled,
   String $robots_txt             = $gitea::robots_txt,
-  ) {
-
+) {
   $required_settings = {
     '' => {
       'RUN_USER' => $owner,
@@ -67,7 +62,7 @@ class gitea::config (
       'ROOT' => $repository_root,
     },
     'log' => {
-      'MODE' =>'file',
+      'MODE' => 'file',
       'ROOT_PATH' => $log_directory,
     },
     'attachment' => {

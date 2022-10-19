@@ -1,27 +1,23 @@
-# Class: gitea::user
-# ===========================
+include gitea
+# @summary
+# Manages user for the `gitea` class.
 #
-# Manages user for the `::gitea` class.
-#
-# Parameters
-# ----------
-#
-# * `manage_user`
+# @param manage_user
 # Should we manage provisioning the user? Default: true
 #
-# * `manage_group`
+# @param manage_group
 # Should we manage provisioning the group? Default: true
 #
-# * `manage_home`
+# @param manage_home
 # Should we manage provisioning the home directory? Default: true
 #
-# * `owner`
+# @param owner
 # The user owning gitea and its' files. Default: 'git'
 #
-# * `group`
+# @param group
 # The group owning gitea and its' files. Default: 'git'
 #
-# * `home`
+# @param home
 # Qualified path to the users' home directory. Default: empty
 #
 # Authors
@@ -41,8 +37,7 @@ class gitea::user (
   String  $owner         = $gitea::owner,
   String  $group         = $gitea::group,
   Optional[String] $home = $gitea::home,
-  ) {
-
+) {
   if ($manage_home) {
     if $home == undef {
       $homedir = "/home/${owner}"

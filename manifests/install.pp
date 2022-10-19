@@ -1,66 +1,62 @@
-# Class: gitea::install
-# ===========================
-#
+include gitea
+# @summary
 # Installs gitea, and sets up the directory structure required to run Gitea.
 #
-# Parameters
-# ----------
-#
-# * `package_ensure`
+# @param package_ensure
 # Decides if the `gitea` binary will be installed. Default: 'present'
 #
-# * `owner`
+# @param owner
 # The user owning gitea and its' files. Default: 'git'
 #
-# * `group`
+# @param group
 # The group owning gitea and its' files. Default: 'git'
 #
-# * `proxy`
+# @param proxy
 # Download via specified proxy. Default: empty
-# * `base_url`
+# @param base_url
 # Download base URL. Default: Github. Can be used for local mirrors.
 #
-# * `version`
-# Version of gitea to install. Default: '1.1.0'
+# @param version
+# Version of gitea to install. Default: '1.17.3'
 #
-# * `checksum`
+# @param checksum
 # Checksum for the binary.
-# Default: '59cd3fb52292712bd374a215613d6588122d93ab19d812b8393786172b51d556'
+# Default: '38c4e1228cd051b785c556bcadc378280d76c285b70e8761cd3f5051aed61b5e'
 #
-# * `checksum_type`
+# @param checksum_type
 # Type of checksum used to verify the binary being installed. Default: 'sha256'
 #
-# * `installation_directory`
+# @param installation_directory
 # Target directory to hold the gitea installation. Default: '/opt/gitea'
 #
-# * `repository_root`
+# @param repository_root
 # Directory where gitea will keep all git repositories. Default: '/var/git'
 #
-# * `log_directory`
+# @param log_directory
 # Log directory for gitea. Default: '/var/log/gitea'
 #
-# * `attachment_directory`
+# @param attachment_directory
 # Directory for storing attachments. Default: '/opt/gitea/data/attachments'
 #
-# * `lfs_enabled`
+# @param lfs_enabled
 # Make use of git-lfs. Default: false
 #
-# * `lfs_content_directory`
+# @param lfs_content_directory
 # Directory for storing LFS data. Default: '/opt/gitea/data/lfs'
 #
-# * `manage_service`
+# @param manage_service
 # Should we manage a service definition for Gitea?
 #
-# * `service_template`
+# @param service_template
 # Path to service template file.
 #
-# * `service_path`
+# @param service_path
 # Where to create the service definition.
 #
-# * `service_provider`
+# @param service_provider
 # Which service provider do we use?
 #
-# * `service_mode`
+# @param service_mode
 # File mode for the created service definition.
 #
 # Authors
@@ -95,8 +91,7 @@ class gitea::install (
   String $service_path           = $gitea::service_path,
   String $service_provider       = $gitea::service_provider,
   String $service_mode           = $gitea::service_mode,
-  ) {
-
+) {
   file { $repository_root:
     ensure => 'directory',
     owner  => $owner,
@@ -139,9 +134,9 @@ class gitea::install (
   }
 
   if ($package_ensure) {
-    $kernel_down=downcase($::kernel)
+    $kernel_down=downcase($facts['kernel'])
 
-    case $::architecture {
+    case $facts['os']['architecture'] {
       /(x86_64)/: {
         $arch = 'amd64'
       }
@@ -149,7 +144,7 @@ class gitea::install (
         $arch = '386'
       }
       default: {
-        $arch = $::architecture
+        $arch = $facts['os']['architecture']
       }
     }
 
